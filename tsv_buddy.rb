@@ -8,15 +8,20 @@ module TsvBuddy
   # parameter: tsv - a String in TSV format
   def take_tsv(tsv)
     # split the records by new line
-
-    temp = tsv.split(/[\n]/)
-    # get the field names (keys) which are in the first record
-    keys = temp[0].split(/[\t]/)
-    temp.shift
-    #do a mapping by transposing
+    # this piece of code works too
+    # can't decide which is better in performance
+    # this is a bit messy
+    tsv_lines = tsv.split(/[\n]/)
+    # getting the keys/field names
+    keys = tsv_lines[0].split("\t").map(&:chomp)
+    tsv_lines.shift # remove the first line which contains the keys
     @data = Array.new
-    temp.map do |rec|
-      @data << Hash[[ keys,rec.split("\t") ].transpose]
+    tsv_lines.each do |line|
+      v = line.split("\t") # get values separated by tabs
+      record = {} # create hash to store key value pair or record
+      keys.each_index { |index| record[keys[index]] = v[index].chomp }
+      # push the hash to the global array that holds all records
+      @data << record
     end
   end
 
