@@ -8,6 +8,7 @@ module TsvBuddy
   # parameter: tsv - a String in TSV format
   def take_tsv(tsv)
     # split the records by new line
+
     temp = tsv.split(/[\n]/)
     # get the field names (keys) which are in the first record
     keys = temp[0].split(/[\t]/)
